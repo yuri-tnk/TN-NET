@@ -30,13 +30,13 @@ user's socket input queue (it is a TNKernel data queue also) and user's socket t
 
    A descriptor size is 32 bytes, data buffer size can be 32, 128 or 1536 bytes. An allocation a separate memory block for the descriptor makes a memory buffers system very flexible (just a few examples):
 
-             - for the zero-copy operation it is enough allocate a new descriptor only.
+             - for the zero-copy operation it is enough allocate a new descriptor only.<br>
 
-             - in the NXP LPC23xx CPU an Ethernet MAC has access only to the Ethernet RAM
-               (16 kbyte). In this case, data buffers can be allocated in the Ethernet RAM
-               and descriptors can be allocated in the regular RAM.
+             - in the NXP LPC23xx CPU an Ethernet MAC has access only to the Ethernet RAM<br>
+               (16 kbyte). In this case, data buffers can be allocated in the Ethernet RAM<br>
+               and descriptors can be allocated in the regular RAM.<br>
 
-             - data buffer can be placed into the read-only memory.
+             - data buffer can be placed into the read-only memory.<br>
 
    <span class="blue1">**3.2 Protocols**</span>
 
@@ -59,8 +59,6 @@ user's socket input queue (it is a TNKernel data queue also) and user's socket t
 <tbody>
 
 <tr>
-
-<td>_**  Supported socket functions**_</td>
 
 </tr>
 
@@ -218,24 +216,23 @@ user's socket input queue (it is a TNKernel data queue also) and user's socket t
 
     <span class="blue1">**4.1 UDP Examples**</span>
 
-     "UDP_Test_1" - This is a UDP data acquisition example. The device sends a packet to the host, host sends back an ACK response.
-      This example works together with a PC-based "_UDP_daq_" This is a TDTP protocol demo (it uses UDP as a transport layer protocol).
+     "UDP_Test_1" - This is a UDP data acquisition example. The device sends a packet to the host, host sends back an ACK response. This example works together with a PC-based "UDP_daq" This is a TDTP protocol demo (it uses UDP as a transport layer protocol).
 
-     "UDP_Test_2" - the example works together with a PC-based "_UDP_server_" application.
-There are 2 network related user tasks in the project - TASK_PROCESSING and TASK_DAQ. Each task has an own UDP socket to transfer data. Both tasks have an equal priority and perform a UDP data exchange simultaneously.
-   A TASK_PROCESSING task sends a on-the-fly generated file (~4Mbytes) to the "_UDP_server_" application, when a "_Receive to file_" radio button is selected in the "_UDP_server_" dialog window.
-   When "_Send file_" radio button is selected in the "_UDP_server_" dialog window, a file from the PC (user should choose the file) is transferred to the device.
-   Both transfers are performed with TDTP protocol.
-
-  A TASK_DAQ task simulates a data acquisition process by the "_UDP_server_" application request. After a request from the "_UDP_server_" application, the task sends a data to the "_UDP_server_".
-   The transfer is performed with TDTP protocol.
+     "UDP_Test_2" - the example works together with a PC-based 'UDP_server' application.
+There are 2 network related user tasks in the project - TASK_PROCESSING and TASK_DAQ. Each task has an own UDP socket to transfer data.
+Both tasks have an equal priority and perform a UDP data exchange simultaneously.
+A TASK_PROCESSING task sends a on-the-fly generated file (~4Mbytes) to the "UDP_server" application, when a "Receive to file" radio button is selected in the "UDP_server" dialog window.
+When "Send file" radio button is selected in the "UDP_server" dialog window, a file from the PC (user should choose the file) is transferred to the device.
+Both transfers are performed with TDTP protocol.<br>
+  A TASK_DAQ task simulates a data acquisition process by the "UDP_server" application request. After a request from the "UDP_server" application, the task sends a data to the "UDP_server".
+The transfer is performed with TDTP protocol.
 
     <span class="blue1">**4.2 TCP Examples**</span>
 
   An examples "_TCP_test_1_", "_TCP_test_2_" and "_TCP_test_3_" show TN NET TCP protocol client operating - reception, transmission and both reception and transmission. The examples work together with a PC applications _TCP_test_1_", "_TCP_test_2_" and "_TCP_test_3_".
   An examples "_TCP_test_4_", "_TCP_test_5_" and "_TCP_test_6_" show TN NET TCP protocol server operating - reception, transmission and both reception and transmission. The examples work together with a PC applications _TCP_test_4_", "_TCP_test_5_" and "_TCP_test_6_".
   An examples "_TCP_test_7_" shows TN NET TCP server's sockets opening/closing.
-  An examples "_HTTP_test_1_" shows TN NET simple embedded Web server. The Web site files for the server should be prepared by the "_htm_to_c.exe_" utility ( [http-pc-1-0-src.zip](http://tnkernel.com/downloads/http-pc-1-0-src.zip) ).
+  An examples "_HTTP_test_1_" shows TN NET simple embedded Web server. The Web site files for the server should be prepared by the "_htm_to_c.exe_" utility.
  The Web server supports forms and dynamic data updating.
 
 </div>
@@ -251,7 +248,7 @@ There are 2 network related user tasks in the project - TASK_PROCESSING and TASK
 
 <tr>
 
-<td></td>
+<td>BSD</td>
 <td></td>
 
 </tr>
