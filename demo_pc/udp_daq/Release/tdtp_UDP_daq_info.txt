@@ -1,0 +1,18 @@
+
+  This application is used together with TN NET "UDP_Test_1" example.
+
+
+   For the Windows(c) Vista(c) users:
+  ------------------------------------
+
+    If you got some unstable data exchange and/or a PING utility with -t option
+  sometimes reports "General failure":
+
+     - update a network card driver (especially a Realtek RTL8168/8111 PCI-E)
+       to the latest version
+
+     - check a Windows Firewall settings
+
+     - check an additional network security software (antiviruses etc.) settings
+
+

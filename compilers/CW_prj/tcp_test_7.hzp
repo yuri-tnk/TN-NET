@@ -1,0 +1,112 @@
+<!DOCTYPE CrossStudio_Project_File>
+<solution version="1" Name="tcp_test_7" >
+  <project Name="tcp_test_7" >
+    <configuration project_directory="" link_include_startup_code="No" project_type="Executable" Name="Common" />
+    <folder Name="Source Files" >
+      <configuration filter="c;cpp;cxx;cc;h;s;asm;inc;s" Name="Common" />
+      <file file_name="startup_hardware_init.s" Name="startup_hardware_init.s" />
+      <file file_name="tnkernel_startup_gcc.s" Name="tnkernel_startup_gcc.s" />
+      <folder Name="tcp_test_7" >
+        <file file_name="../tcp_test_7/utils.c" Name="utils.c" />
+        <file file_name="../tcp_test_7/tn_sprintf.c" Name="tn_sprintf.c" />
+        <file file_name="../tcp_test_7/tn_user.c" Name="tn_user.c" />
+        <file file_name="../tcp_test_7/tcp_test_7.c" Name="tcp_test_7.c" />
+      </folder>
+      <folder Name="TNKernel" >
+        <file file_name="../TNKernel/tn_utils.c" Name="tn_utils.c" />
+        <file file_name="../TNKernel/tn.c" Name="tn.c" />
+        <file file_name="../TNKernel/tn_dqueue.c" Name="tn_dqueue.c" />
+        <file file_name="../TNKernel/tn_event.c" Name="tn_event.c" />
+        <file file_name="../TNKernel/tn_mem.c" Name="tn_mem.c" />
+        <file file_name="../TNKernel/tn_port.c" Name="tn_port.c" />
+        <file file_name="../TNKernel/tn_sem.c" Name="tn_sem.c" />
+        <file file_name="../TNKernel/tn_tasks.c" Name="tn_tasks.c" />
+        <file file_name="../TNKernel/tn_port_asm.s" Name="tn_port_asm.s" />
+        <file file_name="../TNKernel/tn_mem_dbg.c" Name="tn_mem_dbg.c" />
+      </folder>
+      <folder Name="tn_net" >
+        <file file_name="../tn_net/tn_tcp.h" Name="tn_tcp.h" />
+        <file file_name="../tn_net/errno.h" Name="errno.h" />
+        <file file_name="../tn_net/ip_icmp.h" Name="ip_icmp.h" />
+        <file file_name="../tn_net/queue.h" Name="queue.h" />
+        <file file_name="../tn_net/stdafx.h" Name="stdafx.h" />
+        <file file_name="../tn_net/tn_arp.c" Name="tn_arp.c" />
+        <file file_name="../tn_net/tn_eth.h" Name="tn_eth.h" />
+        <file file_name="../tn_net/tn_icmp.c" Name="tn_icmp.c" />
+        <file file_name="../tn_net/tn_ip.h" Name="tn_ip.h" />
+        <file file_name="../tn_net/tn_ip_input.c" Name="tn_ip_input.c" />
+        <file file_name="../tn_net/tn_ip_output.c" Name="tn_ip_output.c" />
+        <file file_name="../tn_net/tn_mbuf.c" Name="tn_mbuf.c" />
+        <file file_name="../tn_net/tn_mbuf.h" Name="tn_mbuf.h" />
+        <file file_name="../tn_net/tn_net.h" Name="tn_net.h" />
+        <file file_name="../tn_net/tn_net_cfg.h" Name="tn_net_cfg.h" />
+        <file file_name="../tn_net/tn_net_mem.h" Name="tn_net_mem.h" />
+        <file file_name="../tn_net/tn_net_pcb.h" Name="tn_net_pcb.h" />
+        <file file_name="../tn_net/tn_net_queue.h" Name="tn_net_queue.h" />
+        <file file_name="../tn_net/tn_net_types.h" Name="tn_net_types.h" />
+        <file file_name="../tn_net/tn_net_utils.c" Name="tn_net_utils.c" />
+        <file file_name="../tn_net/tn_net_utils.h" Name="tn_net_utils.h" />
+        <file file_name="../tn_net/tn_netif.h" Name="tn_netif.h" />
+        <file file_name="../tn_net/tn_netprot.h" Name="tn_netprot.h" />
+        <file file_name="../tn_net/tn_protosw.h" Name="tn_protosw.h" />
+        <file file_name="../tn_net/tn_sockets_tcp.h" Name="tn_sockets_tcp.h" />
+        <file file_name="../tn_net/in4_cksum.c" Name="in4_cksum.c" />
+        <file file_name="../tn_net/tn_in_pcb.c" Name="tn_in_pcb.c" />
+        <file file_name="../tn_net/tn_udp.c" Name="tn_udp.c" />
+        <file file_name="../tn_net/tn_sockets_udp.c" Name="tn_sockets_udp.c" />
+        <file file_name="../tn_net/tn_sockets.c" Name="tn_sockets.c" />
+        <file file_name="../tn_net/tn_tcp_input.c" Name="tn_tcp_input.c" />
+        <file file_name="../tn_net/tn_tcp_output.c" Name="tn_tcp_output.c" />
+        <file file_name="../tn_net/tn_tcp_sockets.c" Name="tn_tcp_sockets.c" />
+        <file file_name="../tn_net/tn_tcp_sockets2.c" Name="tn_tcp_sockets2.c" />
+        <file file_name="../tn_net/tn_tcp_subr.c" Name="tn_tcp_subr.c" />
+        <file file_name="../tn_net/tn_tcp_timer.c" Name="tn_tcp_timer.c" />
+        <file file_name="../tn_net/tn_net_mem.c" Name="tn_net_mem.c" />
+        <folder Name="cpu_lpc23xx" >
+          <file file_name="../tn_net/cpu_lpc23xx/LPC236x.h" Name="LPC236x.h" />
+          <file file_name="../tn_net/cpu_lpc23xx/emac.h" Name="emac.h" />
+          <file file_name="../tn_net/cpu_lpc23xx/lpc23xx_int.c" Name="lpc23xx_int.c" />
+          <file file_name="../tn_net/cpu_lpc23xx/lpc23xx_mac.c" Name="lpc23xx_mac.c" />
+          <file file_name="../tn_net/cpu_lpc23xx/lpc23xx_mac_drv.c" Name="lpc23xx_mac_drv.c" />
+          <file file_name="../tn_net/cpu_lpc23xx/lpc23xx_net.c" Name="lpc23xx_net.c" />
+          <file file_name="../tn_net/cpu_lpc23xx/lpc23xx_net_emac.h" Name="lpc23xx_net_emac.h" />
+          <file file_name="../tn_net/cpu_lpc23xx/lpc23xx_phy_KS8721.c" Name="lpc23xx_phy_KS8721.c" />
+          <file file_name="../tn_net/cpu_lpc23xx/lpc23xx_phy_KS8721.h" Name="lpc23xx_phy_KS8721.h" />
+        </folder>
+        <file file_name="../tn_net/tn_dhcp.c" Name="tn_dhcp.c" />
+      </folder>
+    </folder>
+    <configuration target_reset_script="LPC210X_ResetWithSRAMVectorsAtZero()" Name="RAM" />
+    <configuration arm_target_flash_loader_file_path="$(StudioDir)/targets/Philips_LPC23XX/Release/Loader.exe" target_reset_script="LPC210X_ResetWithBootLoaderFLASHVectorsAtZero()" Name="Flash" />
+    <folder Name="System Files" >
+      <configuration filter="" Name="Common" />
+      <file file_name="$(StudioDir)/targets/Philips_LPC23XX/Philips_LPC210X_Target.js" Name="Philips_LPC210X_Target.js" >
+        <configuration Name="Common" file_type="Reset Script" />
+      </file>
+      <file file_name="sram_placement.xml" Name="sram_placement.xml" >
+        <configuration build_exclude_from_build="Yes" Name="ARM Flash Debug" />
+        <configuration build_exclude_from_build="Yes" Name="ARM Flash Release" />
+        <configuration build_exclude_from_build="Yes" Name="THUMB Flash Debug" />
+        <configuration build_exclude_from_build="Yes" Name="THUMB Flash Release" />
+      </file>
+      <file file_name="flash_placement.xml" Name="flash_placement.xml" >
+        <configuration build_exclude_from_build="Yes" Name="ARM RAM Release" />
+        <configuration build_exclude_from_build="Yes" Name="ARM RAM Debug" />
+      </file>
+      <file file_name="Philips_LPC2368_MemoryMap.xml" Name="Philips_LPC2368_MemoryMap.xml" />
+    </folder>
+    <configuration c_enforce_ansi_checking="Yes" arm_target_loader_parameter="12000000" arm_target_flash_loader_file_path="$(StudioDir)/targets/Philips_LPC23XX/Release/Loader.exe" arm_interwork="No" gcc_entry_point="0x0" arm_long_calls="No" link_include_standard_libraries="Yes" gcc_optimization_level="Level 1" c_additional_options="-Wall" linker_additional_options="" default_code_section=".text" Name="ARM Flash Debug" linker_output_format="hex" />
+    <configuration c_enforce_ansi_checking="Yes" arm_target_loader_parameter="12000000" arm_interwork="No" gcc_entry_point="0x0" arm_long_calls="No" link_include_standard_libraries="Yes" gcc_optimization_level="Level 1" c_additional_options="-Wall" linker_additional_options="" default_code_section=".text" Name="ARM Flash Release" />
+    <configuration c_enforce_ansi_checking="Yes" arm_target_loader_parameter="12000000" arm_interwork="Yes" gcc_entry_point="0x0" arm_long_calls="No" link_include_standard_libraries="Yes" gcc_optimization_level="Level 1" c_additional_options="-Wall" linker_additional_options="" default_code_section=".text" Name="THUMB Flash Debug" />
+    <configuration c_enforce_ansi_checking="Yes" arm_target_loader_parameter="12000000" arm_interwork="Yes" gcc_entry_point="0x0" arm_long_calls="No" link_include_standard_libraries="Yes" gcc_optimization_level="Level 1" c_additional_options="-Wall" linker_additional_options="" default_code_section=".text" Name="THUMB Flash Release" />
+  </project>
+  <configuration c_preprocessor_definitions="DEBUG" hidden="Yes" Name="Debug" />
+  <configuration c_preprocessor_definitions="NDEBUG" gcc_optimization_level="Level 1" build_debug_information="No" hidden="Yes" Name="Release" />
+  <configuration c_preprocessor_definitions="__FLASH_BUILD" hidden="Yes" Name="Flash" />
+  <configuration c_preprocessor_definitions="__ARM" arm_instruction_set="ARM" hidden="Yes" Name="ARM" />
+  <configuration c_preprocessor_definitions="__THUMB" arm_instruction_set="THUMB" hidden="Yes" Name="THUMB" />
+  <configuration inherited_configurations="ARM;Flash;Debug" Name="ARM Flash Debug" />
+  <configuration inherited_configurations="ARM;Flash;Release" Name="ARM Flash Release" />
+  <configuration inherited_configurations="THUMB;Flash;Debug" Name="THUMB Flash Debug" />
+  <configuration inherited_configurations="THUMB;Flash;Release" Name="THUMB Flash Release" />
+</solution>

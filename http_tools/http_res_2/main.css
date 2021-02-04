@@ -1,0 +1,70 @@
+.style1 {
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        color: #FF9900;
+}
+.style2 {
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        font-size: 10px;
+        color: #FFFFFF;
+        LINE-HEIGHT: 15px;
+}
+.style3 {
+        FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif;
+        FONT-SIZE: 11px;
+        COLOR: #005B90;
+        LINE-HEIGHT: 21px;
+        vertical-align: text-top;
+        cursor: hand;
+}
+.style4 {
+        FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif;
+        FONT-SIZE: 11px;
+        COLOR: #000000;
+        text-align: left;
+}
+
+.style5 {
+        FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif;
+        FONT-SIZE: 11px;
+        COLOR: #0000cc;
+}
+
+.style6 {
+        font-family: Courier New, Arial;
+        font-size: 13px;
+        color: #000000;
+}
+
+.style8 {
+        FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif;
+        FONT-SIZE: 11px;
+        COLOR: #000000;
+        text-align: left;
+}
+
+.style3 A:link {
+        COLOR: #005B90; TEXT-DECORATION: none
+}
+.style3 A:active {
+        COLOR: #005B90; TEXT-DECORATION: none
+}
+.style3 A:visited {
+        COLOR: #005B90; TEXT-DECORATION: none
+}
+.style3 A:hover {
+        COLOR: #ff9900; TEXT-DECORATION: underline
+}
+.style5 A:link {
+        COLOR: #ff0000; TEXT-DECORATION: none
+}
+.style5 A:active {
+        COLOR: #ff0000; TEXT-DECORATION: none
+}
+.style5 A:visited {
+        COLOR: #ff9900; TEXT-DECORATION: none
+}
+.style5 A:hover {
+        COLOR: #ff9900; TEXT-DECORATION: none
+}
+
+

@@ -1,0 +1,25 @@
+
+ROM_LOAD 0x00000000
+{
+    ER_RO +0				; Execution region called ER_R0
+    					; region starts at end of previous
+    {
+        tnkernel_startup_keil_rvc.o (RESET, +FIRST) ; Vect region is 1st
+        *(+RO)		                      ; all other RO sections follow
+    }
+
+    ER_RW 0x40000000        		; Execution region called ER_RW
+    					; region starts at 0x40000000
+    {
+        *(+RW)				; all RW sections follow
+    }
+
+    ER_ZI +0				; Execution region called ER_ZI
+    					; region starts at end of previous
+    {
+        *(+ZI)				; all ZI sections follow
+    }
+}
+
+
+

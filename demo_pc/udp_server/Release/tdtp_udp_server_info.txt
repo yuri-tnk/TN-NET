@@ -1,0 +1,34 @@
+
+     This application is used together with TN NET "UDP_Test_2" example.
+
+     When a "Receive to file" radio button is selected in the "UDP_server" dialog
+  window, the device sends a on-the-fly generated file (~4Mbytes) to the application,
+     When "Send file" radio button is selected in the "UDP_server" dialog window,
+  a file from the PC (an user should choose the file name) is transferred to the device.
+     Both transfers are performed with TDTP protocol.
+
+     A "Data acquisition" section in the "UDP_server" dialog window performs a data
+  acquisition process by the application request. After pressing the "Start" button,
+  the application (in the infinite loop) sends a request to the device and
+  the device sends a data to the "UDP_server".
+     The transfer is performed with TDTP protocol.
+
+     Both "Receive to file"/"Send file" and "Data acquisition" tasks can work
+  simultaneously.
+
+
+
+   For the Windows(c) Vista(c) users:
+  ------------------------------------
+
+    If you got some unstable data exchange and/or a PING utility with -t option
+  sometimes reports "General failure":
+
+     - update a network card driver (especially a Realtek RTL8168/8111 PCI-E)
+       to the latest version
+
+     - check a Windows Firewall settings
+
+     - check an additional network security software (antiviruses etc.) settings
+
+

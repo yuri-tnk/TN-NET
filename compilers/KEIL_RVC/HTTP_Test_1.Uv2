@@ -1,0 +1,162 @@
+### uVision2 Project, (C) Keil Software
+### Do not modify !
+
+Target (HTTP_Test_1), 0x0004 // Tools: 'ARM-ADS'
+
+Group (Test Files)
+Group (TNKernel)
+Group (System Files)
+Group (tn_net)
+Group (cpu_lpc23xx)
+
+File 1,1,<..\HTTP_Test_1\utils.c><utils.c>
+File 1,1,<..\HTTP_Test_1\http_test_1.c><http_test_1.c>
+File 1,1,<..\HTTP_Test_1\tn_httpd.c><tn_httpd.c>
+File 1,1,<..\HTTP_Test_1\tn_sprintf.c><tn_sprintf.c>
+File 1,1,<..\HTTP_Test_1\tn_user.c><tn_user.c>
+File 2,2,<..\TNKernel\tn_port_asm_armcc.s><tn_port_asm_armcc.s>
+File 2,1,<..\TNKernel\tn_utils.c><tn_utils.c>
+File 2,1,<..\TNKernel\tn.c><tn.c>
+File 2,1,<..\TNKernel\tn_dqueue.c><tn_dqueue.c>
+File 2,1,<..\TNKernel\tn_event.c><tn_event.c>
+File 2,1,<..\TNKernel\tn_mem.c><tn_mem.c>
+File 2,1,<..\TNKernel\tn_mem_dbg.c><tn_mem_dbg.c>
+File 2,1,<..\TNKernel\tn_mutex.c><tn_mutex.c>
+File 2,1,<..\TNKernel\tn_port.c><tn_port.c>
+File 2,1,<..\TNKernel\tn_sem.c><tn_sem.c>
+File 2,1,<..\TNKernel\tn_tasks.c><tn_tasks.c>
+File 3,2,<.\tnkernel_startup_keil_rvc.s><tnkernel_startup_keil_rvc.s>
+File 3,2,<.\startup_hardware_init.s><startup_hardware_init.s>
+File 4,1,<..\tn_net\tn_udp.c><tn_udp.c>
+File 4,1,<..\tn_net\in4_cksum.c><in4_cksum.c>
+File 4,1,<..\tn_net\tn_arp.c><tn_arp.c>
+File 4,1,<..\tn_net\tn_icmp.c><tn_icmp.c>
+File 4,1,<..\tn_net\tn_in_pcb.c><tn_in_pcb.c>
+File 4,1,<..\tn_net\tn_ip_input.c><tn_ip_input.c>
+File 4,1,<..\tn_net\tn_ip_output.c><tn_ip_output.c>
+File 4,1,<..\tn_net\tn_mbuf.c><tn_mbuf.c>
+File 4,1,<..\tn_net\tn_net_mem.c><tn_net_mem.c>
+File 4,1,<..\tn_net\tn_net_utils.c><tn_net_utils.c>
+File 4,1,<..\tn_net\tn_sockets.c><tn_sockets.c>
+File 4,1,<..\tn_net\tn_sockets_udp.c><tn_sockets_udp.c>
+File 4,1,<..\tn_net\tn_tcp_input.c><tn_tcp_input.c>
+File 4,1,<..\tn_net\tn_tcp_output.c><tn_tcp_output.c>
+File 4,1,<..\tn_net\tn_tcp_sockets2.c><tn_tcp_sockets2.c>
+File 4,1,<..\tn_net\tn_tcp_sockets.c><tn_tcp_sockets.c>
+File 4,1,<..\tn_net\tn_tcp_subr.c><tn_tcp_subr.c>
+File 4,1,<..\tn_net\tn_tcp_timer.c><tn_tcp_timer.c>
+File 4,1,<..\tn_net\tn_dhcp.c><tn_dhcp.c>
+File 5,1,<..\tn_net\cpu_lpc23xx\lpc23xx_phy_KS8721.c><lpc23xx_phy_KS8721.c>
+File 5,1,<..\tn_net\cpu_lpc23xx\lpc23xx_int.c><lpc23xx_int.c>
+File 5,1,<..\tn_net\cpu_lpc23xx\lpc23xx_mac.c><lpc23xx_mac.c>
+File 5,1,<..\tn_net\cpu_lpc23xx\lpc23xx_mac_drv.c><lpc23xx_mac_drv.c>
+File 5,1,<..\tn_net\cpu_lpc23xx\lpc23xx_net.c><lpc23xx_net.c>
+
+
+Options 1,0,0  // Target 'HTTP_Test_1'
+ Device (LPC2368)
+ Vendor (NXP (founded by Philips))
+ Cpu (IRAM(0x40000000-0x40007FFF) IRAM2(0x7FE00000-0x7FE03FFF) IROM(0-0x7FFFF) CLOCK(12000000) CPUTYPE(ARM7TDMI))
+ FlashUt (LPC210x_ISP.EXE ("#H" ^X $D COM1: 38400 1))
+ StupF ("STARTUP\Philips\LPC2300.s" ("Philips LPC2300 Startup Code"))
+ FlashDR (UL2ARM(-U268761108 -O7 -S0 -C0 -FO15 -FD40000000 -FC800 -FN1 -FF0LPC_IAP2_512 -FS00 -FL07E000))
+ DevID (4152)
+ Rgf (LPC23xx.H)
+ Mem ()
+ C ()
+ A ()
+ RL ()
+ OH ()
+ DBC_IFX ()
+ DBC_CMS ()
+ DBC_AMS ()
+ DBC_LMS ()
+ UseEnv=0
+ EnvBin ()
+ EnvInc ()
+ EnvLib ()
+ EnvReg (ÿPhilips\)
+ OrgReg (ÿPhilips\)
+ TgStat=16
+ OutDir (.\OBJ_HTTP1\)
+ OutName (HTTP_Test_1)
+ GenApp=1
+ GenLib=0
+ GenHex=1
+ Debug=1
+ Browse=1
+ LstDir (.\LST_HTTP1\)
+ HexSel=1
+ MG32K=0
+ TGMORE=0
+ RunUsr 0 0 <>
+ RunUsr 1 0 <>
+ BrunUsr 0 0 <>
+ BrunUsr 1 0 <>
+ CrunUsr 0 0 <>
+ CrunUsr 1 0 <>
+ SVCSID <>
+ GLFLAGS=1790
+ ADSFLGA { 243,31,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ ACPUTYP (ARM7TDMI)
+ RVDEV ()
+ ADSTFLGA { 0,12,16,2,99,0,0,66,0,0,0,0,0,0,0,0,0,0,0,0 }
+ OCMADSOCM { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ OCMADSIRAM { 0,0,0,0,64,0,128,0,0 }
+ OCMADSIROM { 1,0,0,0,0,0,0,8,0 }
+ OCMADSXRAM { 0,0,0,0,0,0,0,0,0 }
+ OCR_RVCT { 1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,8,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,64,0,128,0,0,0,0,0,224,127,0,64,0,0 }
+ RV_STAVEC ()
+ ADSCCFLG { 8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ ADSCMISC ()
+ ADSCDEFN ()
+ ADSCUDEF ()
+ ADSCINCD ()
+ ADSASFLG { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ ADSAMISC ()
+ ADSADEFN ()
+ ADSAUDEF ()
+ ADSAINCD ()
+ PropFld { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ IncBld=1
+ AlwaysBuild=0
+ GenAsm=0
+ AsmAsm=0
+ PublicsOnly=0
+ StopCode=3
+ CustArgs ()
+ LibMods ()
+ ADSLDFG { 16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ ADSLDTA (0x00000000)
+ ADSLDDA (0x40000000)
+ ADSLDSC (.\lpc23XX_flash.scat)
+ ADSLDIB ()
+ ADSLDIC ()
+ ADSLDMC ()
+ ADSLDIF ()
+ ADSLDDW ()
+  OPTDL (SARM.DLL)(-cLPC236x)(DARMP.DLL)(-pLPC2368)(SARM.DLL)()(TARMP.DLL)(-pLPC2368)
+  OPTDBG 48125,0,()()()()()()()()()() (BIN\UL2ARM.DLL)()()()
+ FLASH1 { 2,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ FLASH2 (BIN\UL2ARM.DLL)
+ FLASH3 (LPC210x_ISP.EXE ("#H" ^X $D COM1: 38400 1))
+ FLASH4 ()
+EndOpt
+
+Options 1,2,6  // File 'tn_port_asm_armcc.s'
+ PropFld { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ IncBld=2
+ AlwaysBuild=2
+ GenAsm=2
+ AsmAsm=2
+ PublicsOnly=2
+ StopCode=11
+ CustArgs ()
+ LibMods ()
+ ADSASFLG { 170,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ ADSAMISC (--diag_suppress=A1745W)
+ ADSADEFN ()
+ ADSAUDEF ()
+ ADSAINCD ()
+EndOpt
+

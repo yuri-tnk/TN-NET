@@ -1,0 +1,229 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""res\\UDP_server.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""     // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\UDP_server.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 206, 76
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About the program..."
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,14,14,21,20
+    LTEXT           "TN NET - UDP data exchange example",IDC_STATIC,49,14,127,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2009, Yuri Tiomkin",IDC_STATIC,57,28,103,8
+    DEFPUSHBUTTON   "OK",IDOK,149,55,50,14,WS_GROUP
+END
+
+IDD_UDP_SERVER_DIALOG DIALOGEX 0, 0, 331, 245
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "TN NET - UDP data exchange example"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Cancel",IDCANCEL,175,224,50,14
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,152,149,172,1
+    PUSHBUTTON      "Start",IDC_BUTTON_START_RW,274,63,50,14
+    PUSHBUTTON      "Stop",IDC_BUTTON_STOP_RW,274,87,50,14
+    CONTROL         "Receive to file",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON,15,63,61,10
+    CONTROL         "Send file",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,88,63,43,10
+    EDITTEXT        IDC_EDIT_FILENAME,15,94,171,14,ES_AUTOHSCROLL
+    LTEXT           "File name:",IDC_STATIC,15,81,34,8
+    PUSHBUTTON      "...",IDC_BUTTON_FILE,190,94,17,14
+    LTEXT           "Data acquisition (server UDP port 50000)",IDC_STATIC,19,145,132,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,149,7,1
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,151,51,173,1
+    LTEXT           "Data read/write (server UDP port 50001)",IDC_STATIC,19,47,132,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,51,7,1
+    RTEXT           "0",IDC_STATIC_STATUS_RW,127,125,59,8
+    RTEXT           "0",IDC_STATIC_STATUS_DAQ,127,167,59,8
+    PUSHBUTTON      "Start",IDC_BUTTON_START_DAQ,274,161,50,14
+    PUSHBUTTON      "Stop",IDC_BUTTON_STOP_DAQ,274,185,50,14
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,215,317,1
+    PUSHBUTTON      "Info...",IDC_BUTTON_HELP,101,224,50,14
+    LTEXT           "Number of arrived messages:",IDC_STATIC,17,167,95,8
+    LTEXT           "Number of transferred bytes:",IDC_STATIC,17,125,96,8
+    CONTROL         "",IDC_IP_ADDR_CLI,"SysIPAddress32",WS_TABSTOP,15,21,100,15
+    LTEXT           "Client IP address:",IDC_STATIC,15,8,58,8
+    LTEXT           "Number of request repeats:",IDC_STATIC,17,182,90,8
+    LTEXT           "Number of failed requests:",IDC_STATIC,17,197,86,8
+    RTEXT           "0",IDC_STATIC_STATUS_REPEATS,127,182,59,8
+    RTEXT           "0",IDC_STATIC_STATUS_FAILEDREQ,127,197,59,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "TODO: <Company name>"
+            VALUE "FileDescription", "TODO: <File description>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "UDP_server.exe"
+            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "OriginalFilename", "UDP_server.exe"
+            VALUE "ProductName", "TODO: <Product name>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 199
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 69
+    END
+
+    IDD_UDP_SERVER_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 324
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 238
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About the program..."
+    IDP_SOCKETS_INIT_FAILED "Windows sockets initialization failed."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#include "res\UDP_server.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"     // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

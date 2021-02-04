@@ -1,0 +1,24 @@
+<!DOCTYPE Linker_Placement_File>
+<Root name="Flash Section Placement" >
+  <MemorySegment name="FLASH" >
+    <ProgramSection load="Yes" inputsections="*(.vectors .vectors.*)" name=".vectors" />
+    <ProgramSection load="Yes" inputsections="*(.text .text.* .glue_7t .glue_7 .gnu.linkonce.t.*)" name=".text" />
+    <ProgramSection load="Yes" inputsections="KEEP (*(SORT(.dtors.*))) KEEP (*(.dtors))" name=".dtors" />
+    <ProgramSection load="Yes" inputsections="KEEP (*(SORT(.ctors.*))) KEEP (*(.ctors))" name=".ctors" />
+    <ProgramSection load="Yes" runin=".fast_run" inputsections="*(.fast .fast.*)" name=".fast" />
+    <ProgramSection alignment="0x10" load="Yes" inputsections="*(.rodata .rodata.* .gnu.linkonce.r.*)" name=".rodata" />
+    <ProgramSection load="Yes" runin=".data_run" inputsections="*(.data .data.* .gnu.linkonce.d.*)" name=".data" />
+  </MemorySegment>
+  <MemorySegment name="External SRAM;SRAM" >
+    <ProgramSection load="No" inputsections="*(.bss .bss.* .gnu.linkonce.b.*) *(COMMON)" name=".bss" />
+    <ProgramSection load="No" name=".data_run" />
+    <ProgramSection alignment="4" size="0x100" load="No" name=".heap" />
+    <ProgramSection alignment="0x10" size="0x100" load="No" name=".stack" />
+    <ProgramSection alignment="0x10" size="0x400" load="No" name=".stack_irq" />
+    <ProgramSection alignment="0x10" size="0x100" load="No" name=".stack_fiq" />
+  </MemorySegment>
+  <MemorySegment name="Internal SRAM;SRAM" >
+    <ProgramSection size="0x3C" load="No" name=".vectors_ram" />
+    <ProgramSection load="No" name=".fast_run" />
+  </MemorySegment>
+</Root>
