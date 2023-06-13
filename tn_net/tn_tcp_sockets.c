@@ -285,6 +285,7 @@ int tcp_s_accept(TN_NET * tnet,
          tn_net_panic(TNP_ACCEPT);
       aso->rx_timeout = so->rx_timeout;
       so = aso;
+      inp = sotoinpcb(so);
    }
 
   //---- Start soaccept (so, nam);
