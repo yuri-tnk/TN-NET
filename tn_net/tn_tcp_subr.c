@@ -242,7 +242,11 @@ void tcp_respond(TN_NET * tnet,
    //-- we need to compute in any case.
 
    th->th_sum = 0;
-   th->th_sum = in_cksum(m, tlen);
+   th->th_sum = in4_cksum(m,
+                          IPPROTO_TCP,
+                          sizeof(struct ip),
+                          m->m_tlen - sizeof(struct ip));
+
 
    ip->ip_len = htons(tlen);
    ip->ip_ttl = MAXTTL;
