@@ -282,7 +282,9 @@ int udp_output(TN_NET * tnet,
          inp->inp_fport = 0;
 
          splx(tnet, sm);
+         m_freem(tnet, mb_addr);
       }
+      m_freem(tnet, mb);
       return ENOBUFS;
    }
 
