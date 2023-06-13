@@ -42,7 +42,7 @@ void splx(TN_NET * tnet, int sm);
 //------------------------------------
  int tn_socket_wait(TN_SEM * t_sem);
 void tn_net_wakeup(TN_SEM * sem);
-void tn_net_wait(TN_SEM * sem);
+int tn_net_wait(TN_SEM * sem, unsigned int timeout);
 //------------------------------------
 void tn_srand(RNDMWC * mwc, unsigned char * hw_addr);
 unsigned int tn_rand(RNDMWC * mwc);

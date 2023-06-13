@@ -258,9 +258,9 @@ void tn_net_wakeup(TN_SEM * sem)
 }
 
 //----------------------------------------------------------------------------
-void tn_net_wait(TN_SEM * sem)
+int tn_net_wait(TN_SEM * sem, unsigned int timeout)
 {
-   tn_sem_acquire(sem, TN_WAIT_INFINITE);
+  return tn_sem_acquire(sem, timeout ? timeout : TN_WAIT_INFINITE);
 }
 
 //----------------------------------------------------------------------------
