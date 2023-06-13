@@ -417,6 +417,7 @@ void arp_request(TN_NET * tnet,
 
    bzero((unsigned char *)ea, sizeof (*ea));
    bcopy((unsigned char *)etherbroadcastaddr, (unsigned char *)eh->ether_dhost, MAC_SIZE);
+   bcopy((unsigned char *)&ni->hw_addr, (unsigned char *)eh->ether_shost, MAC_SIZE);
 
    eh->ether_type = htons(ETHERTYPE_ARP);
    ea->arp_hrd = htons(ARPHRD_ETHER);
