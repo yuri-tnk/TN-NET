@@ -296,7 +296,7 @@ void arp_input(TN_NET * tnet, TN_NETIF * ni, struct mbuf * mb)
       eh->ether_type = htons(ETHERTYPE_ARP);
 
       //------------------------------
-
+      mb->m_len = sizeof(struct ether_header) + sizeof(struct ether_arp);
       ni->drv_wr(tnet, ni, mb);
    }
    else
