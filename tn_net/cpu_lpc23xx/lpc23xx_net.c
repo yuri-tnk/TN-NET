@@ -102,7 +102,7 @@ void tcp_timer_func(TN_NETINFO * tneti, int cnt);
 
 const net_proto_timer_func g_net_proto_timer_functions[] =
 {
-  // iface1_link_timer_func,   //-- Ethernet Link status checking - period 1 sec
+   iface1_link_timer_func,   //-- Ethernet Link status checking - period 1 sec
 
    arp_timer_func,           //-- ARP timer
 
