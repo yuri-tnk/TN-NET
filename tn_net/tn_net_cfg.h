@@ -79,6 +79,12 @@
 //-- applications may be important.
 //#define TN_TCP_SUPRESS_FW2_MAX_IDLE
 
+//-- Don't use TIME_WAIT state. Closing the connection and release resources 
+//-- immediately after passing FIN_WAIT_2 state. This is very speeds up 
+//-- freeing resources and improving performance on memory constraint devices. 
+//-- Turned off by default because this is nonstandard behavior. 
+//#define TN_TCP_SUPRESS_TIME_WAIT
+
 #define TCP_MIN_FREE_BUF_FOR_NEWCONN   20 
 //----------------------------------------------------------------------------
 

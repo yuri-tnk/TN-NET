@@ -1170,8 +1170,21 @@ step6:
 
             tp->t_state = TCPS_TIME_WAIT;
             tcp_canceltimers(tp);
+#ifdef TN_TCP_SUPRESS_TIME_WAIT
+            soisdisconnected(tnet, so);
+            
+            if(needoutput || (tp->t_flags & TF_ACKNOW))
+            {
+              tcp_output(tnet, tp);
+            }
+            
+            tp = tcp_close(tnet, tp);
+            
+            return;
+#else
             tp->t_timer[TCPT_2MSL] = 2 * TCPTV_MSL;
             soisdisconnected(tnet, so);
+#endif
             break;
 
          //-- In TIME_WAIT state restart the 2 MSL time_wait timer.
