@@ -57,7 +57,7 @@ SUCH DAMAGE.
  *
  */
 
-#include "../tnkernel/tn.h"
+#include <tnkernel/tn.h>
 
 #include "tn_net_cfg.h"
 #include "tn_net_types.h"
