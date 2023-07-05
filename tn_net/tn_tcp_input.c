@@ -309,7 +309,7 @@ void tcp_input(TN_NET * tnet, TN_NETIF * ni, struct mbuf *m)
    th   = (struct tcphdr *)(((unsigned char *)m->m_data) + iphlen);
    tlen = m->m_tlen - iphlen;         //-- TCP header + data
 
-   if(IN_MULTICAST(ip->ip_dst.s__addr) || in_broadcast(ip->ip_dst, ni))
+   if(IN_MULTICAST(ntohl(ip->ip_dst.s__addr)) || in_broadcast(ip->ip_dst, ni))
       goto drop;
 
    if(in4_cksum(m, IPPROTO_TCP, iphlen, tlen))
@@ -492,7 +492,7 @@ findpcb:
          //--  packet with M_BCAST not set.
 
          if(m->m_flags & (M_BCAST|M_MCAST) ||
-                                    IN_MULTICAST(ip->ip_dst.s__addr))
+                                    IN_MULTICAST(ntohl(ip->ip_dst.s__addr)))
             goto drop;
 
        //---- Digest of the in_pcbconnect() for tcp_input()
@@ -1205,7 +1205,7 @@ dropwithreset:
    //-- Don't bother to respond if destination was broadcast/multicast.
 
    if((tiflags & TH_RST) || m->m_flags & (M_BCAST|M_MCAST) ||
-                                  IN_MULTICAST(ip->ip_dst.s__addr))
+                                  IN_MULTICAST(ntohl(ip->ip_dst.s__addr)))
       goto drop;
 
    if(tiflags & TH_ACK)
