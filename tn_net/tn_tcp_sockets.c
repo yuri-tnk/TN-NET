@@ -271,9 +271,11 @@ int tcp_s_accept(TN_NET * tnet,
       return -EINVAL;
    }
 
-   nam = mb_get(tnet, MB_MID1, MB_WAIT, FALSE); //-- Not from Tx pool
+   nam = mb_get(tnet, MB_MID1, MB_NOWAIT, FALSE); //-- Not from Tx pool
+   //We can't block while owning spl
    if(nam == NULL)
    {
+      //drops.accept++
       splx(tnet, sm);
       return -EINVAL;
    }
