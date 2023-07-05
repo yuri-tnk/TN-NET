@@ -73,6 +73,12 @@
 //-- But it may be important to change behavior in some applications.
 //#define TN_TCP_RESET_ON_SONEWCONN_FAIL
 
+//-- Going in TCPS_FIN_WAIT_2 state with minimal idle timeout.
+//-- This allows us to faster close the connection and release resources if 
+//-- the peer gets stuck. This is nonstandard, but changing behavior in some 
+//-- applications may be important.
+//#define TN_TCP_SUPRESS_FW2_MAX_IDLE
+
 #define TCP_MIN_FREE_BUF_FOR_NEWCONN   20 
 //----------------------------------------------------------------------------
 

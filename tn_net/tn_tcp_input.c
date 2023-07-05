@@ -990,7 +990,11 @@ if(tp->t_state == TCPS_ESTABLISHED)
                   if(so->so_state & SS_CANTRCVMORE)
                   {
                      soisdisconnected(tnet, so);
+#ifdef TN_TCP_SUPRESS_FW2_MAX_IDLE
+                     tp->t_timer[TCPT_2MSL] = 1;
+#else
                      tp->t_timer[TCPT_2MSL] = tnet->tcp_maxidle;
+#endif
                   }
 
                   tp->t_state = TCPS_FIN_WAIT_2;
