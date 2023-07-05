@@ -57,7 +57,7 @@ SUCH DAMAGE.
  *	@(#)uipc_mbuf.c	8.2 (Berkeley) 1/4/94
  */
 
-#include "../tnkernel/tn.h"
+#include <tnkernel/tn.h>
 
 #include "tn_net_cfg.h"
 #include "tn_net_types.h"

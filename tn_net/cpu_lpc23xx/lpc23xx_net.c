@@ -26,9 +26,9 @@ SUCH DAMAGE.
 #include "emac.h"
 #include "LPC236x.h"
 
-#include "../../tnkernel/tn.h"
-#include "../../tnkernel/tn_port.h"
-#include "../../tnkernel/tn_utils.h"
+#include <tnkernel/tn.h>
+#include <tnkernel/tn_port.h>
+#include <tnkernel/tn_utils.h>
 
 #include "../tn_net_cfg.h"
 #include "../tn_net_types.h"

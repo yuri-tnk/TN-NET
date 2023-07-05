@@ -22,7 +22,7 @@ OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 */
 
-#include "../tnkernel/tn.h"
+#include <tnkernel/tn.h>
 
 #include "tn_net_cfg.h"
 #include "tn_net_types.h"
