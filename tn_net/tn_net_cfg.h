@@ -33,9 +33,6 @@
 #define  IP4_REASM_PACKETS          1  //-- According to the avaliable CPU Ethernet memory
 #define  IP4_MAX_REASM_FRAGMENTS    2  //-- Max input packet size is 2 MTU (3000 bytes)
 
-//--- Interfaces
-
-#define  USE_PHY_KS8721             1
 
       //-- Interface N1 - Ethernet LPC2368
 
@@ -70,6 +67,11 @@
       //-- TCP
 
 #define TN_TCP 1                     //-- Use TCP
+
+//-- Allows to send RST if we can't handle new TCP connection due to backlog 
+//-- queue overflow. A standard behavior is to drop the connection silently. 
+//-- But it may be important to change behavior in some applications.
+//#define TN_TCP_RESET_ON_SONEWCONN_FAIL
 
 #define TCP_MIN_FREE_BUF_FOR_NEWCONN   20 
 //----------------------------------------------------------------------------

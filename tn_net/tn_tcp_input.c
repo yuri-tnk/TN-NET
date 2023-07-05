@@ -407,12 +407,19 @@ findpcb:
 //--- For the systems with a low memory resources --------
 
       if(tn_tcp_check_avaliable_mem(tnet) != 0)
-         goto drop;
+      {
+        //drops.syn++;
+        goto drop;
+      }
 
 //--------------------------------------------------------
       so = sonewconn(tnet, so);
       if(so == NULL)
-         goto drop;
+#ifdef TN_TCP_RESET_ON_SONEWCONN_FAIL      
+        goto dropwithreset;
+#else        
+        goto drop;
+#endif        
       //-- This is ugly, but ....
 
       //-- Mark socket as temporary until we're
