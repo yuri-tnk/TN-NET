@@ -305,7 +305,7 @@ int drv_lpc23xx_net_rx_data(TN_NET * tnet,
       }
    }
 
-   if(mb == NULL)
+   else
    {
       new_buf = (unsigned char *)tn_net_ialloc_hi(tnet);
       if(new_buf == NULL)
