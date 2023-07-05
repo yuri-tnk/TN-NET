@@ -369,12 +369,8 @@ int net_init_network(TN_NETINFO * tneti)
    tnet->mem_drv_m1buf_mpool = (unsigned int *) MAC_MEM_DRV_MID1_BUF_BASE;
 
    //--- Checking max Eth RAM addr
-   tmp = (unsigned int)MAC_MEM_MAX_USE_ADDR;
 
-   if((unsigned int)MAC_MEM_MAX_USE_ADDR > LPC2368_MAX_ETH_ADDR)
-   {
-      tn_task_sleep(TN_WAIT_INFINITE);
-   }
+   ((void)sizeof(char[1 - 2*!!(MAC_MEM_MAX_USE_ADDR > LPC2368_MAX_ETH_ADDR)]));
 
  //-------------------------------------------------------------
 
