@@ -58,7 +58,7 @@
  *      @(#)in_cksum.c  8.1 (Berkeley) 6/10/93
  */
 
-#include "../tnkernel/tn.h"
+#include <tnkernel/tn.h>
 
 #include "tn_net_cfg.h"
 #include "tn_net_types.h"
