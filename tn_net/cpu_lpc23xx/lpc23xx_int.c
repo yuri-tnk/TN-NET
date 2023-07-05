@@ -43,7 +43,6 @@ SUCH DAMAGE.
 #include "../tn_net_utils.h"
 
 #include "lpc23xx_net_emac.h"
-#include "lpc23xx_phy_KS8721.h"
 #include "lpc23xx_mac_drv.h"
 
 

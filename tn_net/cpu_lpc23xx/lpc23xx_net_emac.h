@@ -44,10 +44,6 @@ SUCH DAMAGE.
       //-- Errors
 
 #define  ERR_RX_ERR                       -2001
-#define  ERR_WR_PHY                       -2002
-#define  ERR_RD_PHY                       -2003
-#define  ERR_RES_PHY                      -2004
-#define  ERR_PHY_ID                       -2005
 
  //----- MAC descriptors --------------------------------------
 
@@ -102,6 +98,7 @@ struct _LPC23XXNETINFO
 
    struct mbuf * mbuf_to_tx;
    int link_up;
+   int link_mode;
    int tx_int_en;
 };
 typedef struct _LPC23XXNETINFO LPC23XXNETINFO;
@@ -129,26 +126,5 @@ typedef struct _LPC23XXNETINFO LPC23XXNETINFO;
 #define  MAC_MEM_DRV_SMALL_BUF_BASE  ((MAC_MEM_RX_BUF_BASE)        + (TNNET_HI_BUF_SIZE    * NUM_HI_BUF))
 #define  MAC_MEM_DRV_MID1_BUF_BASE   ((MAC_MEM_DRV_SMALL_BUF_BASE) + (TNNET_SMALL_BUF_SIZE * NUM_DRV_SMALL_BUF))
 #define  MAC_MEM_MAX_USE_ADDR        ((MAC_MEM_DRV_MID1_BUF_BASE)  + (TNNET_MID1_BUF_SIZE  * NUM_DRV_MID1_BUF))
-
-
-
-
-//--- According to the 'tn_net_cfg.h' select PHY
-
-#ifdef USE_PHY_KS8721  //-- define it inside 'tn_net_cfg.h'
-
-#define   phy_read(a, b)            ks8721_phy_read(a, b)
-#define   phy_write(a, b)           ks8721_phy_write(a, b)
-#define   phy_init(a)               ks8721_phy_init(a)
-#define   phy_update_link_state()   ks8721_phy_update_link_state()
-#define   phy_is_link_up()          ks8721_phy_is_link_up()
-
-// #elif defined - another PHY etc
-
-#else
-
-#error "PHY not defined"
-
-#endif
 
 #endif

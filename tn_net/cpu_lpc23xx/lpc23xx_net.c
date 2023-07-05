@@ -49,7 +49,8 @@ SUCH DAMAGE.
 #endif
 
 #include "lpc23xx_net_emac.h"
-#include "lpc23xx_phy_KS8721.h"
+#include "lpc23xx_mac_drv.h"
+#include "../phy/phy.h"
 
 #include "../dbg_func.h"
 
@@ -158,8 +159,7 @@ struct dhcp  g_iface1_dhcp_dh;
 //--- Extern functions prototypes
 
 int drv_lpc23xx_net_wr(TN_NET * tnet, TN_NETIF * ni, TN_MBUF * mb);
-int drv_lpc23xx_net_ioctl(TN_NET * tnet, TN_NETIF * ni,
-                                         int req_type, void * par);
+int drv_lpc23xx_net_ioctl(TN_NETIF * ni, int req_type, void * par);
 int init_mac(TN_NETINFO * tneti);
 
 //--- Local functions prototypes
@@ -199,7 +199,7 @@ void net_iface1_set_addresses(TN_NETIF * ni)
 }
 
 //----------------------------------------------------------------------------
-int net_iface1_init(TN_NETINFO * tneti)
+int net_iface1_init(TN_NETINFO * tneti, TN_PHYINFO const * phy_info)
 {
    TN_NETIF * ni;
    int rc;
@@ -219,6 +219,11 @@ int net_iface1_init(TN_NETINFO * tneti)
 
    ni->drv_wr    = drv_lpc23xx_net_wr;
    ni->drv_ioctl = drv_lpc23xx_net_ioctl;
+   
+   ni->phy = phy_info;
+   ni->mdio_wr = drv_lpc23xx_mdio_write;
+   ni->mdio_rd = drv_lpc23xx_mdio_read;
+    
 
   //-- Interface rx queue
 

@@ -42,7 +42,8 @@ SUCH DAMAGE.
 #include "../tn_net_mem_func.h"
 
 #include "lpc23xx_net_emac.h"
-#include "lpc23xx_phy_KS8721.h"
+#include "lpc23xx_mac_drv.h"
+#include "../phy/phy.h"
 
 #include "../dbg_func.h"
 
@@ -62,13 +63,59 @@ int drv_lpc23xx_net_tx_data(TN_NET * tnet,
                             TN_MBUF * mb_to_tx,
                             int from_interrupt);
 
+int drv_lpc23xx_mdio_read(int phy_addr, int phy_reg, unsigned short * value)
+{
+  int i;
+  volatile int delay;
+  
+  //-- bits 12..8 -PHY addr, bits 4..0 - PHY reg addr
+  
+  rMAC_MADR = (phy_addr << 8) | (phy_reg & 0x1F);
+  rMAC_MCMD = 0x0001;                    //-- read command
+  
+  for(i= 0; i < PHY_RD_MAX_ITERATIONS; i++)
+  {
+    if((rMAC_MIND & (MIND_BUSY | MIND_NOT_VAL))== 0)
+      break;
+    for(delay = 0; delay < 1000; delay++);
+  }
+  rMAC_MCMD = 0;
+  
+  if(i >= PHY_RD_MAX_ITERATIONS) //-- timeout
+    return FALSE;
+  
+  *value =  rMAC_MRDD;
+  return TRUE;
+}
+
+int drv_lpc23xx_mdio_write(int phy_addr, int phy_reg, unsigned short value)
+{
+  int i;
+  
+  //-- bits 12..8 -PHY addr, bits 4..0 - PHY reg addr
+  
+  rMAC_MADR = (phy_addr<<8) | (phy_reg & 0x1F);
+  
+  rMAC_MWTD = value;
+  
+  for(i= 0; i < MII_WR_TOUT; i++)
+  {
+    if((rMAC_MIND & 1) == 0)              //-- Bit 0 -BUSY
+      break;
+  }
+  
+  if(i >= MII_WR_TOUT) //-- timeout
+    return FALSE;
+  
+  return TRUE;
+}
+
 //----------------------------------------------------------------------------
-int  drv_lpc23xx_net_ioctl(TN_NET * tnet, TN_NETIF * ni,
-                           int req_type, void * par)
+int  drv_lpc23xx_net_ioctl(TN_NETIF * ni, int req_type, void * par)
 {
    TN_INTSAVE_DATA
    LPC23XXNETINFO * nhwi;
-   int rc;
+   int rc = TERR_ILUSE;
 
    nhwi = (LPC23XXNETINFO *)ni->drv_info;
    if(nhwi)
@@ -79,9 +126,7 @@ int  drv_lpc23xx_net_ioctl(TN_NET * tnet, TN_NETIF * ni,
          rc = nhwi->tx_int_en;
          tn_enable_interrupt();
 
-         if(rc)
-            return FALSE;
-         return TRUE;
+         rc = rc ? FALSE : TRUE;
       }
       else if(req_type == IOCTL_ETH_IS_LINK_UP)
       {
@@ -89,12 +134,46 @@ int  drv_lpc23xx_net_ioctl(TN_NET * tnet, TN_NETIF * ni,
          rc = nhwi->link_up;
          tn_enable_interrupt();
 
-         if(rc)
-            return TRUE;
-         return FALSE;
+         rc = rc ? TRUE : FALSE;
+      }
+      else if(req_type == IOCTL_MAC_SET_MODE)
+      {
+        rc = TRUE;
+        if ((int)par == PHY_LINK_100_HD)
+        {
+          rMAC_MAC2    &=    ~0x1;
+          rMAC_COMMAND &=  ~(1<<10);
+          rMAC_IPGT     =   0x0012;   //-- IPGT_HALF_DUP
+          
+          rMAC_SUPP    |=   (1<<8);   //-- RMII - for 100Mb
+        }
+        else if ((int)par == PHY_LINK_10_FD)
+        {
+          rMAC_MAC2    |=     0x1;    //-- MAC2_FULL_DUP
+          rMAC_COMMAND |=  (1<<10);   //-- CR_FULL_DUP
+          rMAC_IPGT     =  0x0015;    //-- IPGT_FULL_DUP
+          
+          rMAC_SUPP    &=  ~(1<<8);
+        }
+        else if ((int)par == PHY_LINK_100_FD)
+        {
+          rMAC_MAC2    |=    0x1;   //-- MAC2_FULL_DUP
+          rMAC_COMMAND |=  (1<<10); //-- CR_FULL_DUP
+          rMAC_IPGT     =  0x0015;  //-- IPGT_FULL_DUP
+          
+          rMAC_SUPP    |=  (1<<8);
+        }
+        else
+        {
+          rMAC_MAC2    &=  ~0x1;
+          rMAC_COMMAND &=  ~(1<<10);
+          rMAC_IPGT     =  0x0012;   //-- IPGT_HALF_DUP
+          
+          rMAC_SUPP    &=  ~(1<<8);
+        }
       }
    }
-   return TERR_ILUSE;
+   return rc;
 }
 
 //----------------------------------------------------------------------------
@@ -103,14 +182,14 @@ int drv_lpc23xx_net_wr(TN_NET * tnet, TN_NETIF * ni, TN_MBUF * mb)
    TN_MBUF * mb0;
    int rc = 0; //-- OK
 
-   if(ni->drv_ioctl(tnet, ni, IOCTL_ETH_IS_LINK_UP, NULL))
+   if(ni->drv_ioctl(ni, IOCTL_ETH_IS_LINK_UP, NULL))
    {
       rc = tn_queue_send_polling(&ni->queueIfaceTx, (void*)mb);
       if(rc == TERR_NO_ERR)
       {
          //-- if tx is disabled
 
-         if(ni->drv_ioctl(tnet, ni, IOCTL_ETH_IS_TX_DISABLED, NULL))
+         if(ni->drv_ioctl(ni, IOCTL_ETH_IS_TX_DISABLED, NULL))
          {
             //-- To Fill descr after stop tx
 
@@ -195,10 +274,12 @@ int drv_lpc23xx_net_rx_data(TN_NET * tnet,
             mb = mb_iget(tnet, MB_MID1, TRUE); //-- Use Tx pool
             break;
          case ETHERTYPE_IP:
-            mb = mb_iget(tnet, MB_MID1, FALSE);
-            break;
          default:
             mb = mb_iget(tnet, MB_MID1, FALSE);
+            if (mb == NULL)
+            {
+                //drops.rx++
+            }
             break;
       }
 
@@ -213,10 +294,14 @@ int drv_lpc23xx_net_rx_data(TN_NET * tnet,
             mb->m_flags |= M_MCAST;
          if(rx_status & (1<<22)) //-- Bit 22 - Broadcast
             mb->m_flags |= M_BCAST;
-
-              //-- Refresh control info for new rx
-         nhwi->rx_descr[ind].Control = ((MAC_RX_BUF_SIZE-1) & 0x7FF) |  //-- Buf length
-                                                          (1u << 31);   //-- Enable RxDone Interrupt
+      }
+      //-- Refresh control info for new rx
+      nhwi->rx_descr[ind].Control = ((MAC_RX_BUF_SIZE - 1) & 0x7FF) | //-- Buf length
+                                    (1u << 31);                       //-- Enable RxDone Interrupt
+      if (mb == NULL)
+      {
+         //rx_drops++;
+         return TERR_OUT_OF_MEM;
       }
    }
 
