@@ -59,7 +59,7 @@ SUCH DAMAGE.
 
 #include <string.h>  //-- memset
 
-#include "../tnkernel/tn.h"
+#include <tnkernel/tn.h>
 
 #include "tn_net_cfg.h"
 #include "tn_net_types.h"
@@ -260,6 +260,22 @@ void arp_input(TN_NET * tnet, TN_NETIF * ni, struct mbuf * mb)
                ni->drv_wr(tnet, ni, mb0);
             }
          }
+#ifdef TN_ARP_EXTRA_LAHOLD         
+         if(arpe->la_hold1) //-- Have data to send
+         {
+            mb0 = add_eth_header(tnet,
+                                 arpe->la_hold1,   //-- mbuf to send
+                                 arpe->mac_addr,  //-- Ethernet dst - Net order
+                                 ni->hw_addr,     //-- Ethernet src - Net order
+                                 ETHERTYPE_IP);   //-- Ethernet type- Host order
+            //-- Data to send - to Ethernet driver
+            if(mb0 != NULL)
+            {
+               arpe->la_hold1 = NULL;
+               ni->drv_wr(tnet, ni, mb0);
+            }
+         }
+#endif         
       }
 
       ARP_UNLOCK
@@ -296,7 +312,7 @@ void arp_input(TN_NET * tnet, TN_NETIF * ni, struct mbuf * mb)
       eh->ether_type = htons(ETHERTYPE_ARP);
 
       //------------------------------
-
+      mb->m_len = sizeof(struct ether_header) + sizeof(struct ether_arp);
       ni->drv_wr(tnet, ni, mb);
    }
    else
@@ -365,7 +381,15 @@ int arp_resolve(TN_NET * tnet,
    //-- response (yet).  Replace the held 'mbuf' with this latest one.
 
    if(arpe->la_hold)
-      m_freem(tnet, arpe->la_hold);
+#ifdef TN_ARP_EXTRA_LAHOLD   
+   {
+     if(arpe->la_hold1)
+       m_freem(tnet, arpe->la_hold1);
+     arpe->la_hold1 = arpe->la_hold;   
+   }
+#else
+   m_freem(tnet, arpe->la_hold);
+#endif   
    arpe->la_hold = mb;
 
    if(arpe->la_asked == 0 || arpe->rt_expire != tn_time_sec())
@@ -417,6 +441,7 @@ void arp_request(TN_NET * tnet,
 
    bzero((unsigned char *)ea, sizeof (*ea));
    bcopy((unsigned char *)etherbroadcastaddr, (unsigned char *)eh->ether_dhost, MAC_SIZE);
+   bcopy((unsigned char *)&ni->hw_addr, (unsigned char *)eh->ether_shost, MAC_SIZE);
 
    eh->ether_type = htons(ETHERTYPE_ARP);
    ea->arp_hrd = htons(ARPHRD_ETHER);
@@ -517,6 +542,12 @@ static TN_ARPENTRY * arp_lookup(TN_NET * tnet,
          m_freem(tnet, arpe->la_hold);
       arpe->la_hold = NULL;
 
+#ifdef TN_ARP_EXTRA_LAHOLD      
+      if(arpe->la_hold1)
+        m_freem(tnet, arpe->la_hold1);
+      arpe->la_hold1 = NULL;
+#endif      
+      
       arpe->itaddr.s__addr = ip_to_find;
       s_memset(arpe->mac_addr, 0, MAC_SIZE);
       arpe->flags = ARP_PENDING;
@@ -561,6 +592,10 @@ void arp_timer_func(TN_NETINFO * tneti, int cnt)
               //-- Free Entry
                if(arpe->la_hold)
                   m_freem(tneti->tnet, arpe->la_hold);
+#ifdef TN_ARP_EXTRA_LAHOLD                  
+               if(arpe->la_hold1)
+                 m_freem(tneti->tnet, arpe->la_hold1);
+#endif                 
                s_memset(arpe, 0, sizeof(TN_ARPENTRY));
             }
          }

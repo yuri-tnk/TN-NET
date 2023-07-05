@@ -98,6 +98,7 @@ struct socket_tcp
     __pkt_field short   so_state;                /* internal state flags SS_*, below */
     __pkt_field unsigned char * so_pcb;          /* protocol control block */
   __pkt_field   sofree_func sofree;              // 4
+    __pkt_field unsigned int rx_timeout;  
 
    //-- Variables for connection queueing.
    //-- Socket where accepts occur is so_head in all subsidiary sockets.

@@ -57,7 +57,7 @@ SUCH DAMAGE.
  *	@(#)uipc_mbuf.c	8.2 (Berkeley) 1/4/94
  */
 
-#include "../tnkernel/tn.h"
+#include <tnkernel/tn.h>
 
 #include "tn_net_cfg.h"
 #include "tn_net_types.h"
@@ -283,8 +283,8 @@ struct mbuf * m_copym (TN_NET * tnet,
             total = m_freem(tnet, mb_first);  // fatal err - free all alloc resources
             if(total == INV_MEM_VAL)
                tn_net_panic(INV_MEM_VAL_34);
-            return NULL;
          }
+         return NULL; 
       }
 
       if(mb_prev)

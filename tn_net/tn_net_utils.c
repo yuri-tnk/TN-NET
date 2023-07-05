@@ -65,7 +65,7 @@ SUCH DAMAGE.
 #include <string.h>  //--
 #include <stdlib.h>
 
-#include "../tnkernel/tn.h"
+#include <tnkernel/tn.h>
 
 #include "tn_net_cfg.h"
 #include "tn_net_types.h"
@@ -258,9 +258,9 @@ void tn_net_wakeup(TN_SEM * sem)
 }
 
 //----------------------------------------------------------------------------
-void tn_net_wait(TN_SEM * sem)
+int tn_net_wait(TN_SEM * sem, unsigned int timeout)
 {
-   tn_sem_acquire(sem, TN_WAIT_INFINITE);
+  return tn_sem_acquire(sem, timeout ? timeout : TN_WAIT_INFINITE);
 }
 
 //----------------------------------------------------------------------------

@@ -57,7 +57,7 @@ SUCH DAMAGE.
  *
  */
 
-#include "../tnkernel/tn.h"
+#include <tnkernel/tn.h>
 
 #include "tn_net_cfg.h"
 #include "tn_net_types.h"
@@ -271,9 +271,11 @@ int tcp_s_accept(TN_NET * tnet,
       return -EINVAL;
    }
 
-   nam = mb_get(tnet, MB_MID1, MB_WAIT, FALSE); //-- Not from Tx pool
+   nam = mb_get(tnet, MB_MID1, MB_NOWAIT, FALSE); //-- Not from Tx pool
+   //We can't block while owning spl
    if(nam == NULL)
    {
+      //drops.accept++
       splx(tnet, sm);
       return -EINVAL;
    }
@@ -283,7 +285,9 @@ int tcp_s_accept(TN_NET * tnet,
       aso = so->so_q;
       if(soqremque(tnet, aso, 1) == 0)
          tn_net_panic(TNP_ACCEPT);
+      aso->rx_timeout = so->rx_timeout;
       so = aso;
+      inp = sotoinpcb(so);
    }
 
   //---- Start soaccept (so, nam);
@@ -443,7 +447,7 @@ int tcp_s_connect(TN_NET * tnet, int s, struct _sockaddr * name, int namelen)
 
    splx(tnet, sm);
 
-dbg_send("s_connect() - OK.\r\n");
+//dbg_send("s_connect() - OK.\r\n");
 
    if(m_freem(tnet, nam) == INV_MEM_VAL)
       tn_net_panic(INV_MEM_VAL_20);
@@ -564,7 +568,8 @@ int tcp_s_recv(TN_NET * tnet,
       else
       {
          splx(tnet, sm);
-         tn_net_wait(&so->so_rcv.sb_sem);
+         if (tn_net_wait(&so->so_rcv.sb_sem, so->rx_timeout) != 0)
+           return -ETIMEDOUT;
       }
    }
 
@@ -726,7 +731,7 @@ int tcp_s_send(TN_NET * tnet,
 
          splx(tnet, sm);
 
-         tn_net_wait(&so->so_snd.sb_sem);
+         tn_net_wait(&so->so_snd.sb_sem, 0);
 
          continue;
       }

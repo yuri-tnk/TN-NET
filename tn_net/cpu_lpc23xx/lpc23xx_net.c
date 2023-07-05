@@ -26,9 +26,9 @@ SUCH DAMAGE.
 #include "emac.h"
 #include "LPC236x.h"
 
-#include "../../tnkernel/tn.h"
-#include "../../tnkernel/tn_port.h"
-#include "../../tnkernel/tn_utils.h"
+#include <tnkernel/tn.h>
+#include <tnkernel/tn_port.h>
+#include <tnkernel/tn_utils.h>
 
 #include "../tn_net_cfg.h"
 #include "../tn_net_types.h"
@@ -49,7 +49,8 @@ SUCH DAMAGE.
 #endif
 
 #include "lpc23xx_net_emac.h"
-#include "lpc23xx_phy_KS8721.h"
+#include "lpc23xx_mac_drv.h"
+#include "../phy/phy.h"
 
 #include "../dbg_func.h"
 
@@ -102,7 +103,7 @@ void tcp_timer_func(TN_NETINFO * tneti, int cnt);
 
 const net_proto_timer_func g_net_proto_timer_functions[] =
 {
-  // iface1_link_timer_func,   //-- Ethernet Link status checking - period 1 sec
+   iface1_link_timer_func,   //-- Ethernet Link status checking - period 1 sec
 
    arp_timer_func,           //-- ARP timer
 
@@ -158,8 +159,7 @@ struct dhcp  g_iface1_dhcp_dh;
 //--- Extern functions prototypes
 
 int drv_lpc23xx_net_wr(TN_NET * tnet, TN_NETIF * ni, TN_MBUF * mb);
-int drv_lpc23xx_net_ioctl(TN_NET * tnet, TN_NETIF * ni,
-                                         int req_type, void * par);
+int drv_lpc23xx_net_ioctl(TN_NETIF * ni, int req_type, void * par);
 int init_mac(TN_NETINFO * tneti);
 
 //--- Local functions prototypes
@@ -169,6 +169,41 @@ static int net_netif1_out_func(TN_NET * tnet, TN_NETIF * ni, TN_MBUF * mb);
 static void net_iface1_rx_task_func(void * par);
 
 //----------------------------------------------------------------------------
+//-- New additional interface for adresses setting allow us to avoid 
+//-- tn_net source code modification.
+
+void net_iface_set_hw_addr(TN_NETIF * ni, char (*mac_addr)[6])
+{
+  memcpy(&ni->hw_addr[0], mac_addr, 6);
+}
+
+void net_iface_set_s_addr(struct in__addr * in__addr, char (*addr)[6])
+{
+  unsigned int tmp;
+  memcpy(&tmp, addr, sizeof(tmp));
+  in__addr->s__addr = tmp;
+}
+
+void net_iface_set_ip_addr(TN_NETIF * ni, char (*ip_addr)[6])
+{
+  net_iface_set_s_addr(&ni->ip_addr, ip_addr);
+}
+
+void net_iface_set_ip_mask(TN_NETIF * ni, char (*ip_mask)[6])
+{
+  net_iface_set_s_addr(&ni->netmask, ip_mask);
+}
+
+void net_iface_set_gw_addr(TN_NETIF * ni, char (*gw_addr)[6])
+{
+  net_iface_set_s_addr(&ni->ip_gateway, gw_addr);
+}
+
+void net_iface_set_br_addr(TN_NETIF * ni, char (*br_addr)[6])
+{
+  net_iface_set_s_addr(&ni->if_broadaddr, br_addr);
+}
+
 void net_iface1_set_addresses(TN_NETIF * ni)
 {
    unsigned int tmp;
@@ -199,7 +234,7 @@ void net_iface1_set_addresses(TN_NETIF * ni)
 }
 
 //----------------------------------------------------------------------------
-int net_iface1_init(TN_NETINFO * tneti)
+int net_iface1_init(TN_NETINFO * tneti, TN_PHYINFO const * phy_info)
 {
    TN_NETIF * ni;
    int rc;
@@ -208,7 +243,19 @@ int net_iface1_init(TN_NETINFO * tneti)
 
    s_memset(ni, 0, sizeof(struct tn_netif));
 
+#ifndef TN_NET_INAPP_SETADDR_IF 
+//-- If we set TN_NET_INAPP_SETADDR_IF we should use calls sequence 
+//-- at the app side like this:
+//-- net_iface1_init(...);
+//-- net_iface_set_hw_addr(...);
+//-- net_iface_set_ip_addr(...);
+//-- net_iface_set_ip_mask(...);
+//-- net_iface_set_gw_addr(...);
+//-- net_iface_set_br_addr(...);
+  
    net_iface1_set_addresses(ni);
+
+#endif   
 
    ni->if_flags   |= IFF_BROADCAST;
    ni->if_mtu      = 1500;
@@ -219,6 +266,11 @@ int net_iface1_init(TN_NETINFO * tneti)
 
    ni->drv_wr    = drv_lpc23xx_net_wr;
    ni->drv_ioctl = drv_lpc23xx_net_ioctl;
+   
+   ni->phy = phy_info;
+   ni->mdio_wr = drv_lpc23xx_mdio_write;
+   ni->mdio_rd = drv_lpc23xx_mdio_read;
+    
 
   //-- Interface rx queue
 
@@ -317,12 +369,8 @@ int net_init_network(TN_NETINFO * tneti)
    tnet->mem_drv_m1buf_mpool = (unsigned int *) MAC_MEM_DRV_MID1_BUF_BASE;
 
    //--- Checking max Eth RAM addr
-   tmp = (unsigned int)MAC_MEM_MAX_USE_ADDR;
 
-   if((unsigned int)MAC_MEM_MAX_USE_ADDR > LPC2368_MAX_ETH_ADDR)
-   {
-      tn_task_sleep(TN_WAIT_INFINITE);
-   }
+   ((void)sizeof(char[1 - 2*!!(MAC_MEM_MAX_USE_ADDR > LPC2368_MAX_ETH_ADDR)]));
 
  //-------------------------------------------------------------
 

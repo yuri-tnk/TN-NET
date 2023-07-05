@@ -27,7 +27,7 @@ SUCH DAMAGE.
 #include "emac.h"
 #include "LPC236x.h"
 
-#include "../../tnkernel/tn.h"
+#include <tnkernel/tn.h>
 
 #include "../tn_net_cfg.h"
 #include "../tn_net_types.h"
@@ -38,9 +38,10 @@ SUCH DAMAGE.
 #include "../errno.h"
 #include "../tn_mbuf.h"
 #include "../tn_netif.h"
+#include "../tn_eth.h"
 
 #include "lpc23xx_net_emac.h"
-#include "lpc23xx_phy_KS8721.h"
+
 
 #ifndef FALSE
 #define FALSE 0
@@ -200,7 +201,7 @@ int init_mac(TN_NETINFO * tneti)
    for(rc = 0; rc < 200; rc++);
    rMAC_SUPP = 0;
 
-   rc = phy_init(hwni);
+   rc = ni->phy->init(ni);
    if(rc != 0) //-- Err
       return rc;
 
@@ -246,12 +247,12 @@ int init_mac(TN_NETINFO * tneti)
                0);                               //-- Highest Priority
 
 #ifdef LOOPBACK
-   phy_read(0, &rc);
+   ni->mdio_rd(ni->phy->addr, 0, (unsigned short *)&rc);
    rc |=   (1<<14) | //-- Loopback
            (1<<13) | //-- Speed - 100 Mb/s
            (1<<8);   //-- 1 = full-duplex
 
-   phy_write(0, rc);
+   ni->mdio_wr(ni->phy->addr, 0, (unsigned short)rc);
 #endif
 
    //-- Enable receive and transmit mode of MAC Ethernet core
@@ -273,23 +274,37 @@ void iface1_link_timer_func(TN_NETINFO * tneti, int cnt)
 {
    TN_INTSAVE_DATA
    LPC23XXNETINFO * nhwi;
+   TN_NETIF * ni;
+   
    int rc;
+   unsigned short op_mode;
 
    if(cnt % 10 == 0)  //-- each 1 sec
    {
-      if(tneti->ni[0])
+      ni = tneti->ni[0];
+      if(ni)
       {
-         nhwi = (LPC23XXNETINFO *)tneti->ni[0]->drv_info;
+         nhwi = (LPC23XXNETINFO *)ni->drv_info;
 
          if(nhwi)
          {
-            rc = phy_is_link_up();
-
-            tn_disable_interrupt();
-            nhwi->link_up = rc;
-            tn_enable_interrupt();
+            rc = ni->phy->is_link_up(ni, &op_mode);
+            if (nhwi->link_mode != op_mode)
+            {
+              ni->drv_ioctl(ni, IOCTL_MAC_SET_MODE, (void *)op_mode);
+              nhwi->link_mode = op_mode;
+            }
+            if (nhwi->link_up != rc)
+            {
+              tn_disable_interrupt();
+              nhwi->link_up = rc;
+              tn_enable_interrupt();
+              if (nhwi->link_up)
+                arp_request(tneti->tnet, //-- gratious ARP on link up
+                            ni,
+                            ni->ip_addr.s__addr);
+            }
          }
-         phy_update_link_state();
       }
    }
 }

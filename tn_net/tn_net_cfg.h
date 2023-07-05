@@ -33,9 +33,6 @@
 #define  IP4_REASM_PACKETS          1  //-- According to the avaliable CPU Ethernet memory
 #define  IP4_MAX_REASM_FRAGMENTS    2  //-- Max input packet size is 2 MTU (3000 bytes)
 
-//--- Interfaces
-
-#define  USE_PHY_KS8721             1
 
       //-- Interface N1 - Ethernet LPC2368
 
@@ -49,6 +46,15 @@
 
 //--- Protocols
 
+     //-- ARP
+
+//-- In some UDP applications(SNMP for example) if we have more than one 
+//-- outgoing packets at a time and arp does not have an active entry for 
+//-- our peer we lose second packet if arp entry still was not renewed at 
+//-- second packet arrival time. Having additional holding entry allows us 
+//-- to handle two packets while arp entry renewal is in progress. 
+//#define TN_ARP_EXTRA_LAHOLD
+     
      //-- DHCP
 
 #define  TN_DHCP  1
@@ -61,6 +67,23 @@
       //-- TCP
 
 #define TN_TCP 1                     //-- Use TCP
+
+//-- Allows to send RST if we can't handle new TCP connection due to backlog 
+//-- queue overflow. A standard behavior is to drop the connection silently. 
+//-- But it may be important to change behavior in some applications.
+//#define TN_TCP_RESET_ON_SONEWCONN_FAIL
+
+//-- Going in TCPS_FIN_WAIT_2 state with minimal idle timeout.
+//-- This allows us to faster close the connection and release resources if 
+//-- the peer gets stuck. This is nonstandard, but changing behavior in some 
+//-- applications may be important.
+//#define TN_TCP_SUPRESS_FW2_MAX_IDLE
+
+//-- Don't use TIME_WAIT state. Closing the connection and release resources 
+//-- immediately after passing FIN_WAIT_2 state. This is very speeds up 
+//-- freeing resources and improving performance on memory constraint devices. 
+//-- Turned off by default because this is nonstandard behavior. 
+//#define TN_TCP_SUPRESS_TIME_WAIT
 
 #define TCP_MIN_FREE_BUF_FOR_NEWCONN   20 
 //----------------------------------------------------------------------------

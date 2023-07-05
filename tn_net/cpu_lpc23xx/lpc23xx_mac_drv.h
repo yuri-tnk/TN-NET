@@ -9,5 +9,11 @@ int drv_lpc23xx_net_tx_data(TN_NET * tnet,
                             TN_NETIF * ni,
                             TN_MBUF * mb_to_tx,
                             int from_interrupt);
+int drv_lpc23xx_mdio_write(int phy_addr, 
+                           int phy_reg, 
+                           unsigned short value);
+int drv_lpc23xx_mdio_read(int phy_addr, 
+                          int phy_reg, 
+                          unsigned short * value);
 #endif
 

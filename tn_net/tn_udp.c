@@ -57,7 +57,7 @@ SUCH DAMAGE.
  *
  */
 
-#include "../tnkernel/tn.h"
+#include <tnkernel/tn.h>
 
 #include "tn_net_cfg.h"
 #include "tn_net_types.h"
@@ -282,7 +282,9 @@ int udp_output(TN_NET * tnet,
          inp->inp_fport = 0;
 
          splx(tnet, sm);
+         m_freem(tnet, mb_addr);
       }
+      m_freem(tnet, mb);
       return ENOBUFS;
    }
 

@@ -52,7 +52,7 @@ SUCH DAMAGE.
  *
  */
 
-#include "../tnkernel/tn.h"
+#include <tnkernel/tn.h>
 
 #include "tn_net_cfg.h"
 #include "tn_net_types.h"
@@ -741,22 +741,15 @@ int s_setsockopt(int s,
    {
       case SO_SNDTIMEO:
       case SO_RCVTIMEO:
-         if(so->so_type == SOCK_STREAM)
-         {
-            return -ENOPROTOOPT;
-         }
-         else if(so->so_type == SOCK_DGRAM)
-         {
-            if(name == SO_RCVTIMEO)
-            {
-               if(val == NULL)
-                  return -EINVAL;
-               bcopy(val, (unsigned char*)&rc, sizeof(int));
-               so->rx_timeout = rc;
-            }
-            else
-               return -ENOPROTOOPT;
-         }
+        if(name == SO_RCVTIMEO)
+        {
+          if(val == NULL)
+            return -EINVAL;
+          bcopy(val, (unsigned char*)&rc, sizeof(int));
+          so->rx_timeout = rc;
+        }
+        else
+          return -ENOPROTOOPT;
          break;
 
       case SO_LINGER:

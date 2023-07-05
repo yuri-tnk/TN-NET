@@ -173,6 +173,9 @@ struct _TN_ARPENTRY            //-- 20 bytes
 {
    unsigned int rt_expire;           //-- 4
    TN_MBUF * la_hold;                //-- 4  mbuf to send(only last)
+#ifdef TN_ARP_EXTRA_LAHOLD   
+   TN_MBUF * la_hold1;               //-- 4  
+#endif
  //---
    struct in__addr itaddr;           //-- 4
    unsigned char mac_addr[MAC_SIZE]; //-- 6

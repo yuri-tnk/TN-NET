@@ -58,7 +58,7 @@ SUCH DAMAGE.
  */
 
 
-#include "../tnkernel/tn.h"
+#include <tnkernel/tn.h>
 
 #include "tn_net_cfg.h"
 #include "tn_net_types.h"
@@ -309,7 +309,7 @@ void tcp_input(TN_NET * tnet, TN_NETIF * ni, struct mbuf *m)
    th   = (struct tcphdr *)(((unsigned char *)m->m_data) + iphlen);
    tlen = m->m_tlen - iphlen;         //-- TCP header + data
 
-   if(IN_MULTICAST(ip->ip_dst.s__addr) || in_broadcast(ip->ip_dst, ni))
+   if(IN_MULTICAST(ntohl(ip->ip_dst.s__addr)) || in_broadcast(ip->ip_dst, ni))
       goto drop;
 
    if(in4_cksum(m, IPPROTO_TCP, iphlen, tlen))
@@ -407,12 +407,19 @@ findpcb:
 //--- For the systems with a low memory resources --------
 
       if(tn_tcp_check_avaliable_mem(tnet) != 0)
-         goto drop;
+      {
+        //drops.syn++;
+        goto drop;
+      }
 
 //--------------------------------------------------------
       so = sonewconn(tnet, so);
       if(so == NULL)
-         goto drop;
+#ifdef TN_TCP_RESET_ON_SONEWCONN_FAIL      
+        goto dropwithreset;
+#else        
+        goto drop;
+#endif        
       //-- This is ugly, but ....
 
       //-- Mark socket as temporary until we're
@@ -492,7 +499,7 @@ findpcb:
          //--  packet with M_BCAST not set.
 
          if(m->m_flags & (M_BCAST|M_MCAST) ||
-                                    IN_MULTICAST(ip->ip_dst.s__addr))
+                                    IN_MULTICAST(ntohl(ip->ip_dst.s__addr)))
             goto drop;
 
        //---- Digest of the in_pcbconnect() for tcp_input()
@@ -983,7 +990,11 @@ if(tp->t_state == TCPS_ESTABLISHED)
                   if(so->so_state & SS_CANTRCVMORE)
                   {
                      soisdisconnected(tnet, so);
+#ifdef TN_TCP_SUPRESS_FW2_MAX_IDLE
+                     tp->t_timer[TCPT_2MSL] = 1;
+#else
                      tp->t_timer[TCPT_2MSL] = tnet->tcp_maxidle;
+#endif
                   }
 
                   tp->t_state = TCPS_FIN_WAIT_2;
@@ -1159,8 +1170,21 @@ step6:
 
             tp->t_state = TCPS_TIME_WAIT;
             tcp_canceltimers(tp);
+#ifdef TN_TCP_SUPRESS_TIME_WAIT
+            soisdisconnected(tnet, so);
+            
+            if(needoutput || (tp->t_flags & TF_ACKNOW))
+            {
+              tcp_output(tnet, tp);
+            }
+            
+            tp = tcp_close(tnet, tp);
+            
+            return;
+#else
             tp->t_timer[TCPT_2MSL] = 2 * TCPTV_MSL;
             soisdisconnected(tnet, so);
+#endif
             break;
 
          //-- In TIME_WAIT state restart the 2 MSL time_wait timer.
@@ -1205,7 +1229,7 @@ dropwithreset:
    //-- Don't bother to respond if destination was broadcast/multicast.
 
    if((tiflags & TH_RST) || m->m_flags & (M_BCAST|M_MCAST) ||
-                                  IN_MULTICAST(ip->ip_dst.s__addr))
+                                  IN_MULTICAST(ntohl(ip->ip_dst.s__addr)))
       goto drop;
 
    if(tiflags & TH_ACK)

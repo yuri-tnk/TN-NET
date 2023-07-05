@@ -27,7 +27,7 @@ SUCH DAMAGE.
 #include "emac.h"
 #include "LPC236x.h"
 
-#include "../../tnkernel/tn.h"
+#include <tnkernel/tn.h>
 
 #include "../tn_net_cfg.h"
 #include "../tn_net_types.h"
@@ -43,7 +43,6 @@ SUCH DAMAGE.
 #include "../tn_net_utils.h"
 
 #include "lpc23xx_net_emac.h"
-#include "lpc23xx_phy_KS8721.h"
 #include "lpc23xx_mac_drv.h"
 
 

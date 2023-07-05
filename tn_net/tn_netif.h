@@ -88,10 +88,13 @@ struct _TN_ARPENTRY;
 
 typedef int (*tn_netif_output_func)(TN_NET * tnet, struct tn_netif * ni, TN_MBUF * mb);
 typedef int (*tn_netif_drv_wr_func)(TN_NET * tnet, struct tn_netif * ni, TN_MBUF * mb);
-typedef int (*tn_netif_drv_ioctl_func)(TN_NET * tnet, struct tn_netif * ni,
+typedef int (*tn_netif_drv_ioctl_func)(struct tn_netif * ni,
                                      int req_type, void * par);
+typedef int (*tn_netif_drv_mdio_wr_func)(int phy_addr, int phy_reg, unsigned short value);
+typedef int (*tn_netif_drv_mdio_rd_func)(int phy_addr, int phy_reg, unsigned short * value);
 
 struct _DHCPINFO;
+typedef struct tn_phyinfo TN_PHYINFO;
 
 struct tn_netif
 {
@@ -130,6 +133,11 @@ struct tn_netif
    // Call From a task - do not call from interuupt
    tn_netif_drv_wr_func     drv_wr;
    tn_netif_drv_ioctl_func  drv_ioctl;
+   
+   TN_PHYINFO const * phy;
+   int phy_id;
+   tn_netif_drv_mdio_wr_func mdio_wr;
+   tn_netif_drv_mdio_rd_func mdio_rd;  
 
  //-- interface extention(s)
 
@@ -152,9 +160,25 @@ struct tn_netif
 };
 typedef struct tn_netif TN_NETIF;
 
+struct tn_phyinfo
+{
+  
+  const unsigned char addr;
+  const unsigned short mode;
+  int (*init)(TN_NETIF * ni);
+  int (*is_link_up)(TN_NETIF * ni, unsigned short * op_mode);
+  
+};
 
 #define IOCTL_ETH_IS_TX_DISABLED  1
 #define IOCTL_ETH_IS_LINK_UP      2
+#define IOCTL_MAC_SET_MODE        3
+
+#define PHY_LINK_DEFAULT 1
+#define PHY_LINK_100_HD 2
+#define PHY_LINK_10_FD 5
+#define PHY_LINK_100_FD 6 
+
 
 #endif
 
