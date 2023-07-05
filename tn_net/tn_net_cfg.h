@@ -49,6 +49,15 @@
 
 //--- Protocols
 
+     //-- ARP
+
+//-- In some UDP applications(SNMP for example) if we have more than one 
+//-- outgoing packets at a time and arp does not have an active entry for 
+//-- our peer we lose second packet if arp entry still was not renewed at 
+//-- second packet arrival time. Having additional holding entry allows us 
+//-- to handle two packets while arp entry renewal is in progress. 
+//#define TN_ARP_EXTRA_LAHOLD
+     
      //-- DHCP
 
 #define  TN_DHCP  1
