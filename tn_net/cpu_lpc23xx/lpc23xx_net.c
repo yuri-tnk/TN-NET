@@ -169,6 +169,41 @@ static int net_netif1_out_func(TN_NET * tnet, TN_NETIF * ni, TN_MBUF * mb);
 static void net_iface1_rx_task_func(void * par);
 
 //----------------------------------------------------------------------------
+//-- New additional interface for adresses setting allow us to avoid 
+//-- tn_net source code modification.
+
+void net_iface_set_hw_addr(TN_NETIF * ni, char (*mac_addr)[6])
+{
+  memcpy(&ni->hw_addr[0], mac_addr, 6);
+}
+
+void net_iface_set_s_addr(struct in__addr * in__addr, char (*addr)[6])
+{
+  unsigned int tmp;
+  memcpy(&tmp, addr, sizeof(tmp));
+  in__addr->s__addr = tmp;
+}
+
+void net_iface_set_ip_addr(TN_NETIF * ni, char (*ip_addr)[6])
+{
+  net_iface_set_s_addr(&ni->ip_addr, ip_addr);
+}
+
+void net_iface_set_ip_mask(TN_NETIF * ni, char (*ip_mask)[6])
+{
+  net_iface_set_s_addr(&ni->netmask, ip_mask);
+}
+
+void net_iface_set_gw_addr(TN_NETIF * ni, char (*gw_addr)[6])
+{
+  net_iface_set_s_addr(&ni->ip_gateway, gw_addr);
+}
+
+void net_iface_set_br_addr(TN_NETIF * ni, char (*br_addr)[6])
+{
+  net_iface_set_s_addr(&ni->if_broadaddr, br_addr);
+}
+
 void net_iface1_set_addresses(TN_NETIF * ni)
 {
    unsigned int tmp;
@@ -208,7 +243,19 @@ int net_iface1_init(TN_NETINFO * tneti, TN_PHYINFO const * phy_info)
 
    s_memset(ni, 0, sizeof(struct tn_netif));
 
+#ifndef TN_NET_INAPP_SETADDR_IF 
+//-- If we set TN_NET_INAPP_SETADDR_IF we should use calls sequence 
+//-- at the app side like this:
+//-- net_iface1_init(...);
+//-- net_iface_set_hw_addr(...);
+//-- net_iface_set_ip_addr(...);
+//-- net_iface_set_ip_mask(...);
+//-- net_iface_set_gw_addr(...);
+//-- net_iface_set_br_addr(...);
+  
    net_iface1_set_addresses(ni);
+
+#endif   
 
    ni->if_flags   |= IFF_BROADCAST;
    ni->if_mtu      = 1500;
